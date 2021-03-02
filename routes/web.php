@@ -23,9 +23,8 @@ Route::prefix('admin')->group(function () {
         return view('admin_template');
     })->name('admin');
 
-    Route::resource('worker', 'App\Http\Controllers\WorkerController')->except(['update', 'edit']);
-    Route::get('/worker/{id}/edit',[App\Http\Controllers\WorkerController::class, 'edit'])->name('worker.edit');
-    Route::post('/worker/{id}', [App\Http\Controllers\WorkerController::class, 'update'])->name('worker.update');
+    Route::resource('worker', 'App\Http\Controllers\WorkerController');
+    
 });
 
 

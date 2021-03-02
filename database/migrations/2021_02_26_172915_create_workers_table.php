@@ -21,7 +21,7 @@ class CreateWorkersTable extends Migration
             $table->string('telephone');
             $table->string('email');
             $table->double('salary');
-           // $table->string('photo');
+            $table->string('image');
             $table->integer('admin_created_id');
             $table->integer('admin_updated_id');
             $table->timestamps();

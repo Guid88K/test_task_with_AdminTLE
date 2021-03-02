@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+
+
 class WorkerController extends Controller
 {
     /**
@@ -39,6 +41,18 @@ class WorkerController extends Controller
      */
     public function store(Request $request)
     {
+
+        /*  $request->validate([
+            'full_name' => 'required|max:256',
+            'position' => 'required',
+            'employment_date' => 'required|max:255',
+            'telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:12|max:12',
+            'email' => 'required|email',
+            'salary' => 'required|max:50 000',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg'
+        ]); */
+
+
         //for check user
         /*  $user = User::find(Auth::user()->id); */
 
@@ -46,18 +60,18 @@ class WorkerController extends Controller
 
         $worker->full_name = $request->full_name;
         $worker->position = $request->position;
-        /*  $worker->employment_date = $request->employment_date; */
-        $worker->employment_date = date("m.d.y");
+        $worker->employment_date = $request->employment_date;
+
         $worker->telephone = $request->telephone;
         $worker->email = $request->email;
         $worker->salary = $request->salary;
 
-        /*  if ($files = $request->file('image')) {
+        if ($files = $request->file('image')) {
             $destinationPath = 'upload'; // upload path
             $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
             $files->move($destinationPath, $profileImage);
-            $worker->photo = $profileImage;
-        } */
+            $worker->image = $profileImage;
+        }
 
         /*  $worker->admin_created_id = $user->id;
         $worker->admin_updated_id = $user->id; */
@@ -92,24 +106,40 @@ class WorkerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*  $user = User::find(Auth::user()->id); */
-        Worker::updateOrCreate(
-            [
-                'id' => $id
-            ],
-            [
-                'full_name' => $request->full_name,
-                'position' => $request->position,
-                'employment_date' => $request->employment_date,
-                'telephone' => $request->telephone,
-                'email' => $request->email,
-                'salary' => $request->salary,
-                'admin_updated_id' => '2'
-                /* $worker->admin_updated_id = $user->id;  */
-            ]
-        );
 
-        return response()->json(['success' => true]);
+        $worker = Worker::find($id);
+
+        $worker->full_name = $request->full_name;
+        $worker->position = $request->position;
+        $worker->employment_date = $request->employment_date;
+
+        $worker->telephone = $request->telephone;
+        $worker->email = $request->email;
+        $worker->salary = $request->salary;
+
+        if ($request->file('image')) {
+            if ($files = $request->file('image')) {
+                $destinationPath = 'upload'; // upload path
+                $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+                $files->move($destinationPath, $profileImage);
+                $worker->image = $profileImage;
+               
+            }
+           
+        }
+       
+        /*  $worker->admin_created_id = $user->id;
+        $worker->admin_updated_id = $user->id; */
+
+        $worker->admin_updated_id = '2';
+       
+        if (
+            $request->full_name && $request->position && $request->employment_date
+            && $request->telephone && $request->email && $request->salary
+        )
+     
+            $worker->save();
+        return redirect('admin/worker');
     }
 
     /**
@@ -122,10 +152,8 @@ class WorkerController extends Controller
     public function edit($id)
     {
         $worker = Worker::find($id);
-        
-        return response()->json([
-            'data' => $worker
-        ]);
+
+        return view('edit', ['worker' => $worker]);
     }
 
     /**
