@@ -92,7 +92,8 @@
                                                                     class="col-2 col-form-label">Date</label>
 
                                                                 <input class="form-control" name="employment_date"
-                                                                    type="date" value="2011-08-19" id="example-date-input">
+                                                                    type="date" value="{{ date('Y-m-d') }}"
+                                                                    id="example-date-input">
 
                                                             </div>
                                                         </div>
@@ -166,6 +167,7 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
+                                            <th>Image</th>
                                             <th>Full name</th>
                                             <th>Position</th>
                                             <th>Employment_date</th>
@@ -178,6 +180,8 @@
                                     <tbody>
                                         @foreach ($worker as $w)
                                             <tr>
+                                                <td><img src="{{ asset('upload/' . $w->image) }}" width="100" height="100">
+                                                </td>
                                                 <td>{{ $w->full_name }}</td>
                                                 <td>{{ $w->position }}
                                                 </td>

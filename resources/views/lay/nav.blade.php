@@ -26,8 +26,20 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+        <div class="pt-2">
+            <a class="" href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();">
+                {{ __('Logout') }}
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </div>
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
+            
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-comments"></i>
                 <span class="badge badge-danger navbar-badge">3</span>
@@ -135,8 +147,10 @@
                 <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">{{Auth::user()->name}}</a>
+                
             </div>
+           
         </div>
 
         <!-- Sidebar Menu -->
@@ -164,7 +178,7 @@
                         </p>
                     </a>
                 </li>
-
+               
                 {{-- <li class="nav-item">
                     <a href="pages/widgets.html" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>

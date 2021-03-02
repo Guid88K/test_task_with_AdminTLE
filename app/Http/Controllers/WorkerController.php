@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -54,7 +58,7 @@ class WorkerController extends Controller
 
 
         //for check user
-        /*  $user = User::find(Auth::user()->id); */
+        $user = User::find(Auth::user()->id);
 
         $worker = new Worker();
 
@@ -73,11 +77,8 @@ class WorkerController extends Controller
             $worker->image = $profileImage;
         }
 
-        /*  $worker->admin_created_id = $user->id;
-        $worker->admin_updated_id = $user->id; */
-
-        $worker->admin_created_id = '1';
-        $worker->admin_updated_id = '1';
+        $worker->admin_created_id = $user->id;
+        $worker->admin_updated_id = $user->id;
 
         if (
             $request->full_name && $request->position && $request->employment_date
@@ -106,6 +107,7 @@ class WorkerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::find(Auth::user()->id);
 
         $worker = Worker::find($id);
 
@@ -123,22 +125,18 @@ class WorkerController extends Controller
                 $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
                 $files->move($destinationPath, $profileImage);
                 $worker->image = $profileImage;
-               
             }
-           
         }
-       
-        /*  $worker->admin_created_id = $user->id;
-        $worker->admin_updated_id = $user->id; */
 
-        $worker->admin_updated_id = '2';
-       
+      
+        $worker->admin_updated_id = $user->id;
+
         if (
             $request->full_name && $request->position && $request->employment_date
             && $request->telephone && $request->email && $request->salary
         )
-     
             $worker->save();
+
         return redirect('admin/worker');
     }
 

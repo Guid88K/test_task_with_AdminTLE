@@ -59,7 +59,7 @@
 
                                     <input class="form-control" name="employment_date" type="date" value="{{$worker->employment_date}}"
                                         id="example-date-input">
-
+                                       
                                 </div>
                             </div>
                         </div>
